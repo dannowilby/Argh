@@ -1,15 +1,12 @@
-package org.wilby.blocks;
+package wilby.argh.common.blocks;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import org.wilby.Argh;
 
 import com.google.common.base.Preconditions;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +15,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
+import wilby.argh.Argh;
+import wilby.argh.common.blocks.decoration.BlockMarble;
+import wilby.argh.common.blocks.decoration.BlockMarbleBrick;
+import wilby.argh.common.blocks.decoration.BlockMarbleLamp;
 
 @ObjectHolder(Argh.MODID)
 public class Blocks 
