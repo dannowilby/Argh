@@ -29,7 +29,7 @@ public class Argh
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e)
 	{
-		
+		System.out.println("argh");
 	}
 	
 	@EventHandler
