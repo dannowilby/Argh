@@ -14,16 +14,16 @@ import wilby.argh.common.blocks.ArghMultiblock;
 public class CommonProxy implements IGuiHandler
 {
 	
-	Map<String, ArghMultiblock> multiblocks = new HashMap<String, ArghMultiblock>();
+	public static Map<String, ArghMultiblock> multiblocks = new HashMap<String, ArghMultiblock>();
 	
 	public void preInit(FMLPreInitializationEvent e)
 	{
-		multiblocks.put("smeltery", new ArghMultiblock("structure_smeltery", "smeltery"));
+		
 	}
 	
 	public void init(FMLInitializationEvent e)
 	{
-		
+		ArghMultiblock testBlock = new ArghMultiblock("smeltery", null, "smeltery");
 	}
 	
 	public void postInit(FMLPostInitializationEvent e)

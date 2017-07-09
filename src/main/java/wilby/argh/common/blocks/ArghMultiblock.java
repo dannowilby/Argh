@@ -1,40 +1,41 @@
 package wilby.argh.common.blocks;
 
+import java.util.HashMap;
+
 import net.minecraft.tileentity.TileEntity;
+import wilby.argh.Argh;
+import wilby.argh.common.Structure;
 
 public class ArghMultiblock 
 {
 	
-	private int[][][] sl;
-	private String id;
+	public static HashMap<String, Structure> structures = new HashMap<String, Structure>();
 	
-	public ArghMultiblock(String structureLocation, String id)
+	public static void removeStructure(String id)
 	{
-		this.id = id;
-		sl = loadStructure(structureLocation);
-	}
-
-	public int[][][] getBlockStructure()
-	{
-		return sl;
+		structures.remove(id);
 	}
 	
-	public String getId()
+	public static void setStructure(String id, Structure structure)
 	{
-		return id;
+		structures.put(id, structure);
 	}
 	
-	public TileEntity getTileEntity()
+	public ArghMultiblock(String id, TileEntity te, String structureLocation)
 	{
-		
-		return null;
+		try 
+		{
+			setStructure(id, Argh.getConfig().loadStructure(structureLocation, te));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
-	private int[][][] loadStructure(String structureLocation) 
+	public TileEntity getTileEntity(String id)
 	{
-		
-		
-		return null;
+		return structures.get(id).getTileEntity();
 	}
 	
 }

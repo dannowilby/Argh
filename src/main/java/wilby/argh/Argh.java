@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import wilby.argh.common.CommonProxy;
+import wilby.argh.common.Config;
 import wilby.argh.common.blocks.BlockEvents;
 
 @Mod(modid = Argh.MODID, version = Argh.VERSION, name = Argh.NAME)
@@ -28,11 +29,15 @@ public class Argh
 	public static Argh argh = new Argh();
 
 	public static Logger modlogger;
+	
+	private static Config config;
 	    
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e)
 	{
 		proxy.preInit(e);
+		
+		config = new Config(e.getModConfigurationDirectory());
 	}
 	
 	@EventHandler
@@ -49,4 +54,10 @@ public class Argh
 	{
 		proxy.postInit(e);
 	}
+	
+	public static Config getConfig()
+	{
+		return config;
+	}
+	
 }
