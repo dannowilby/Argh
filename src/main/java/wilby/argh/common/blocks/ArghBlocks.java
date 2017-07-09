@@ -21,12 +21,22 @@ import wilby.argh.common.blocks.decoration.BlockMarbleBrick;
 import wilby.argh.common.blocks.decoration.BlockMarbleLamp;
 
 @ObjectHolder(Argh.MODID)
-public class Blocks 
+public class ArghBlocks 
 {
 	
 	public static final Block marble = new BlockMarble("marble", Material.ROCK);
 	public static final Block marbleBrick = new BlockMarbleBrick("marblebrick", Material.ROCK);
 	public static final Block marbleLamp = new BlockMarbleLamp("marblelamp", Material.CIRCUITS);
+	
+	public static Block getBlockFromId(String id)
+	{
+		if(id.matches("a0"))
+			return marbleBrick;
+		if(id.matches("a1"))
+			return marble;
+		else
+			return null;
+	}
 	
 	@Mod.EventBusSubscriber(modid = Argh.MODID)
 	public static class RegistrationHandler {

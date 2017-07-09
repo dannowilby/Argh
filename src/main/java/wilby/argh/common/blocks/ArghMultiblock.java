@@ -3,6 +3,8 @@ package wilby.argh.common.blocks;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import wilby.argh.Argh;
 import wilby.argh.common.Structure;
 
@@ -25,7 +27,7 @@ public class ArghMultiblock
 	{
 		try 
 		{
-			setStructure(id, Argh.getConfig().loadStructure(structureLocation, te));
+			setStructure(id, Argh.getConfig().loadStructure(structureLocation));
 		}
 		catch(Exception e)
 		{
@@ -33,9 +35,21 @@ public class ArghMultiblock
 		}
 	}
 	
-	public TileEntity getTileEntity(String id)
+	public static boolean isMultiblock(String structureId, World world, BlockPos pos)
 	{
-		return structures.get(id).getTileEntity();
+		
+		
+		return false;
+	}
+	
+	public static BlockPos getControlBlock(String structureId, World world, BlockPos pos)
+	{
+		if(isMultiblock(structureId, world, pos))
+		{
+			
+		}
+		
+		return null;
 	}
 	
 }

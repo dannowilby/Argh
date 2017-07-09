@@ -7,7 +7,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class BlockEvents 
+public class ArghEvents 
 {
 	
 	@SubscribeEvent
@@ -16,11 +16,9 @@ public class BlockEvents
 		if(event.getEntityLiving() instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-			if(player.isSneaking())
+			if(player.isSneaking() && player.getName().equalsIgnoreCase("queserah"))
 			{
-				player.addVelocity(0, 1.0d, 0);
-				player.cameraPitch = 0;
-				player.cameraYaw = 0;
+				player.addVelocity(0, .5d, 0);
 			}
 		}
 	}
@@ -28,9 +26,9 @@ public class BlockEvents
 	@SubscribeEvent
 	public void createMultiblock(BlockEvent.PlaceEvent e)
 	{
-		if(Block.isEqualTo(e.getPlacedBlock().getBlock(), Blocks.marbleBrick) && Block.isEqualTo(e.getWorld().getBlockState(new BlockPos(e.getPos().getX(), e.getPos().getY() - 1, e.getPos().getZ())).getBlock(), Blocks.marbleBrick))
+		if(ArghMultiblock.isMultiblock("smeltery", e.getWorld(), e.getPos()))
 		{
-			System.out.println(ArghMultiblock.structures.get("smeltery").getStructureLayout()[0][0][0].getLocalizedName());
+			
 		}
 	}
 	

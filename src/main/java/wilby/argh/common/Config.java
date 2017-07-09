@@ -3,11 +3,14 @@ package wilby.argh.common;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import wilby.argh.Argh;
+import wilby.argh.common.blocks.ArghBlocks;
+import wilby.argh.common.blocks.Vector4ib;
 
 public class Config 
 {
@@ -35,24 +38,58 @@ public class Config
 		return modDir;
 	}
 
-	public Structure loadStructure(String structureLocation, TileEntity te) throws Exception
+	public Structure loadStructure(String structureLocation) throws Exception
 	{
 		
 		BufferedReader br = new BufferedReader(new FileReader(new File(structDir.getPath() + "/" + structureLocation + ".strct")));
 		
 		String[] line = br.readLine().split("-");
 		
-		int x = Integer.parseInt(line[0]);
-		int y = Integer.parseInt(line[1]);
-		int z = Integer.parseInt(line[2]);
+		int maxX = Integer.parseInt(line[0]), maxY = Integer.parseInt(line[1]), maxZ = Integer.parseInt(line[2]);
 		
-		Block[][][] struct= new Block[x][y][z];
+		ArrayList<Vector4ib> list = new ArrayList<Vector4ib>();
 		
-		struct[0][0][0] = Blocks.STONE;
+		int x = 0, y = 0, z = 0;
+		
+		String nextLine;
+		
+		int offsetX = 0;
+		int offsetY = 0;
+		while(!((nextLine = br.readLine()) == null))
+		{
+			line = nextLine.split("-");
+			
+			int offsetZ = 0;
+			for(int i = 0; i < line.length; i++)
+			{
+				if(line[i].startsWith("a"))
+				{
+					list.add(new Vector4ib(x + offsetX, y + offsetY, z + offsetZ, ArghBlocks.getBlockFromId(line[i])));
+				}
+				else
+				{
+					list.add(new Vector4ib(x + offsetX, y + offsetY, z + offsetZ, Block.getBlockById(Integer.parseInt(line[i]))));
+				}
+				offsetZ++;
+			}
+			if(offsetZ >= maxZ)
+			{
+				offsetZ = 0;
+			}
+			if(offsetX >= maxX)
+			{
+				offsetX = 0;
+				offsetY+=1;
+			}
+			if(offsetY >= maxY)
+			{
+				break;
+			}
+		}
 		
 		br.close();
 		
-		return new Structure(struct, te);
+		return new Structure(list);
 	}
 	
 }

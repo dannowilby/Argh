@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import wilby.argh.common.CommonProxy;
 import wilby.argh.common.Config;
-import wilby.argh.common.blocks.BlockEvents;
+import wilby.argh.common.blocks.ArghEvents;
 
 @Mod(modid = Argh.MODID, version = Argh.VERSION, name = Argh.NAME)
 
@@ -45,7 +45,7 @@ public class Argh
 	{
 		proxy.init(e);
 		
-		MinecraftForge.EVENT_BUS.register(new BlockEvents());
+		MinecraftForge.EVENT_BUS.register(new ArghEvents());
 		
 	}
 	

@@ -1,30 +1,22 @@
 package wilby.argh.common;
 
-import java.io.File;
+import java.util.ArrayList;
 
-import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
+import wilby.argh.common.blocks.Vector4ib;
 
 public class Structure 
 {
 	
-	private Block[][][] structure;
-	private TileEntity te;
+	private ArrayList<Vector4ib> structure;
 	
-	public Structure(Block[][][] b, TileEntity te)
+	public Structure(ArrayList<Vector4ib> b)
 	{
 		structure = b;
-		this.te = te;
 	}
 	
-	public Block[][][] getStructureLayout()
+	public ArrayList<Vector4ib> getStructureLayout()
 	{
 		return structure;
-	}
-	
-	public TileEntity getTileEntity()
-	{
-		return te;
 	}
 	
 }
