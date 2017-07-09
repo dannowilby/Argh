@@ -1,0 +1,16 @@
+[
+{
+  "modid": "argh",
+  "name": "Argh Mod 3",
+  "description": "Who knows?",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Queserah, dywilby"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
