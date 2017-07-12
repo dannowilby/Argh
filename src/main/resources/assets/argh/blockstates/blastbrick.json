@@ -2,9 +2,9 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "particle": "argh:blocks/marble"
+            "particle": "argh:blocks/blastbrick"
         },
-        "model": "argh:marble",
+        "model": "argh:blastbrick",
         "uvlock": false
     },
     "variants": {

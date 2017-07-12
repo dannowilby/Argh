@@ -1,5 +1,18 @@
 {
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "particle": "argh:blocks/marblebrick"
+        },
+        "model": "argh:marblebrick",
+        "uvlock": false
+    },
     "variants": {
-        "normal": { "model": "argh:marblebrick"}
+        "normal": [{
+
+        }],
+        "inventory": [{
+            
+        }]
     }
 }

@@ -1,4 +1,4 @@
-package wilby.argh.common.blocks;
+package wilby.argh.multiblock;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

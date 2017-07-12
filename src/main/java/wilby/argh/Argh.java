@@ -10,9 +10,12 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import wilby.argh.common.ArghEvents;
 import wilby.argh.common.CommonProxy;
 import wilby.argh.common.Config;
-import wilby.argh.common.blocks.ArghEvents;
+import wilby.argh.multiblock.ArghMultiblock;
+import wilby.argh.multiblock.TileEntitySmeltery;
 
 @Mod(modid = Argh.MODID, version = Argh.VERSION, name = Argh.NAME)
 
@@ -45,14 +48,17 @@ public class Argh
 	{
 		proxy.init(e);
 		
-		MinecraftForge.EVENT_BUS.register(new ArghEvents());
+		GameRegistry.registerTileEntity(TileEntitySmeltery.class, "smeltery");
+		ArghMultiblock.init();
 		
+		MinecraftForge.EVENT_BUS.register(new ArghEvents());
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e)
 	{
 		proxy.postInit(e);
+		
 	}
 	
 	public static Config getConfig()

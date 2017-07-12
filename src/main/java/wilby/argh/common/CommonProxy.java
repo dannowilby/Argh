@@ -3,27 +3,40 @@ package wilby.argh.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.Logger;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import wilby.argh.common.blocks.ArghMultiblock;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import wilby.argh.multiblock.ArghMultiblock;
+import wilby.argh.multiblock.TileEntitySmeltery;
 
 public class CommonProxy implements IGuiHandler
 {
 	
 	public static Map<String, ArghMultiblock> multiblocks = new HashMap<String, ArghMultiblock>();
 	
+	public static Logger log;
+	
+	public void registerEntityRenderers() 
+	{
+	}
+	public void registerItemRenderers() 
+	{
+	}
+	
 	public void preInit(FMLPreInitializationEvent e)
 	{
-		
+		log = e.getModLog();
 	}
 	
 	public void init(FMLInitializationEvent e)
 	{
-		ArghMultiblock testBlock = new ArghMultiblock("smeltery", null, "smeltery");
+		
 	}
 	
 	public void postInit(FMLPostInitializationEvent e)

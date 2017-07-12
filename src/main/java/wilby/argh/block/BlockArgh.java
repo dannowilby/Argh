@@ -1,15 +1,15 @@
-package wilby.argh.common.blocks;
+package wilby.argh.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class BlockArghDecoration extends Block 
+public class BlockArgh extends Block 
 {
 
 	private String name;
 	
-	public BlockArghDecoration(String name, Material materialIn) 
+	public BlockArgh(String name, Material materialIn) 
 	{
 		super(materialIn);
 		this.name = name;

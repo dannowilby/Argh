@@ -6,11 +6,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import wilby.argh.Argh;
-import wilby.argh.common.blocks.ArghBlocks;
-import wilby.argh.common.blocks.Vector4ib;
+import wilby.argh.block.ArghBlocks;
+import wilby.argh.multiblock.Layer;
+import wilby.argh.multiblock.Structure;
 
 public class Config 
 {
@@ -38,58 +38,68 @@ public class Config
 		return modDir;
 	}
 
-	public Structure loadStructure(String structureLocation) throws Exception
+	public Structure loadStructure(String structureLocation)
 	{
-		
-		BufferedReader br = new BufferedReader(new FileReader(new File(structDir.getPath() + "/" + structureLocation + ".strct")));
-		
-		String[] line = br.readLine().split("-");
-		
-		int maxX = Integer.parseInt(line[0]), maxY = Integer.parseInt(line[1]), maxZ = Integer.parseInt(line[2]);
-		
-		ArrayList<Vector4ib> list = new ArrayList<Vector4ib>();
-		
-		int x = 0, y = 0, z = 0;
-		
-		String nextLine;
-		
-		int offsetX = 0;
-		int offsetY = 0;
-		while(!((nextLine = br.readLine()) == null))
+		try
 		{
-			line = nextLine.split("-");
+			BufferedReader br = new BufferedReader(new FileReader(new File(structDir.getPath() + "/" + structureLocation + ".strct")));
 			
-			int offsetZ = 0;
-			for(int i = 0; i < line.length; i++)
+			String[] line = br.readLine().split("-");
+			int maxX = Integer.parseInt(line[0]), maxY = Integer.parseInt(line[1]), maxZ = Integer.parseInt(line[2]);
+			
+			line = br.readLine().split("-");
+			
+			BlockPos central = new BlockPos(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+			
+			ArrayList<Layer> list = new ArrayList<Layer>();
+			
+			for(int i = 0; i < maxY; i++)
 			{
-				if(line[i].startsWith("a"))
+				list.add(new Layer(maxX, maxZ));
+			}
+			
+			String nextLine;
+			
+			int x = 0, z = 0;
+			
+			while(!((nextLine = br.readLine()) == null))
+			{
+				line = nextLine.split("-");
+				String[] line2 = {line[1], line[2] ,line[3]};
+				Layer l = list.get(Integer.parseInt(line[0]) - 1);
+				for(String i : line2)
 				{
-					list.add(new Vector4ib(x + offsetX, y + offsetY, z + offsetZ, ArghBlocks.getBlockFromId(line[i])));
+					if(i.startsWith("a"))
+					{
+						l.setIndex(x, z, ArghBlocks.getBlockFromId(i));
+					}
+					else
+					{
+						l.setIndex(x, z, Block.getBlockById(Integer.parseInt(i)));
+					}
+					z++;
 				}
-				else
+				x++;
+				
+				if(x >= maxX)
 				{
-					list.add(new Vector4ib(x + offsetX, y + offsetY, z + offsetZ, Block.getBlockById(Integer.parseInt(line[i]))));
+					x = 0;
 				}
-				offsetZ++;
+				if(z >= maxZ)
+				{
+					z = 0;
+				}
 			}
-			if(offsetZ >= maxZ)
-			{
-				offsetZ = 0;
-			}
-			if(offsetX >= maxX)
-			{
-				offsetX = 0;
-				offsetY+=1;
-			}
-			if(offsetY >= maxY)
-			{
-				break;
-			}
+			
+			br.close();
+			
+			return new Structure(list, central);
 		}
-		
-		br.close();
-		
-		return new Structure(list);
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

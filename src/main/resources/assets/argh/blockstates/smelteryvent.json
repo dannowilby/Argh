@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "particle": "argh:blocks/smelteryvent"
+        },
+        "model": "argh:smelteryvent",
+        "uvlock": false
+    },
+    "variants": {
+        "normal": [{
+	"facing=north": { "model": "argh:smelteryvent" },
+        "facing=south": { "model": "argh:smelteryvent", "y": 180 },
+        "facing=west":  { "model": "argh:smelteryvent", "y": 270 },
+        "facing=east":  { "model": "argh:smelteryvent", "y": 90 }
+        }],
+        "inventory": [{
+            
+        }]
+    }
+}
