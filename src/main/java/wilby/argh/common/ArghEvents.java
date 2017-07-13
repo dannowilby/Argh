@@ -32,6 +32,7 @@ public class ArghEvents
 		if(e.getWorld().getTileEntity(e.getPos()) instanceof TileEntityMultiblock)
 		{
 			TileEntityMultiblock temb = (TileEntityMultiblock) e.getWorld().getTileEntity(e.getPos());
+			System.out.println("Is tile entity multiblock" + temb.toString());
 		}
 	}
 	

@@ -1,7 +1,9 @@
 package wilby.argh.multiblock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -9,13 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import wilby.argh.block.ArghBlocks;
 
 public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedInventory
 {
 	
 	private boolean master = false;
+	private HashMap<BlockPos,TileEntitySmeltery> childs;
 	ArrayList<BlockPos> children;
 	
 	@Override
@@ -25,7 +27,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 		{
 			if(!isMaster())
 			{
-				
+				System.out.println("is peon");
 			}
 			
 			if(isMaster() && isFullMultiblock())
@@ -48,7 +50,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	@Override
 	public boolean isMaster() 
 	{
-		if(isFullMultiblock())
+		if(Block.isEqualTo(world.getBlockState(pos).getBlock(), ArghBlocks.smelteryVent))
 		{
 			return (master = true);
 		}
@@ -67,29 +69,40 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	{
 		System.out.println("giving birth");
 		children = new ArrayList<BlockPos>();
+		childs = new HashMap<BlockPos, TileEntitySmeltery>();
 		children = this.getMultiblockPartsList();
 		this.getMultiblockPartsList().forEach((l) -> {
 			if(!(world.getTileEntity(l) instanceof TileEntitySmeltery))
 			{
-				world.setTileEntity(l, new TileEntitySmeltery());
+				TileEntitySmeltery tes = new TileEntitySmeltery();
+				tes.setPos(l);
+				childs.put(l, tes);
+				world.addTileEntity(tes);
+				
 			}
 		});
 		
 	}
 
 	@Override
-	@SideOnly(Side.SERVER)
 	public void deleteChildren()
 	{
 		System.out.println("deleting children");
+		System.out.println(children.size());
 		children.forEach((l) -> {
+			
+			
 			if(world.getTileEntity(l) instanceof TileEntitySmeltery)
 			{
+				System.out.println(l);
 				TileEntitySmeltery tes = (TileEntitySmeltery) world.getTileEntity(l);
-				
 				if(!tes.isMaster())
-					world.removeTileEntity(l);
-				
+				{
+					childs.get(l).invalidate();
+					TileEntitySmeltery tes1 = childs.get(l);
+					tes1 = null;
+					System.out.println(world.getTileEntity(l).toString());
+				}
 			}
 		});
 		children = null;
