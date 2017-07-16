@@ -1,13 +1,17 @@
 package wilby.argh.common;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wilby.argh.multiblock.TileEntityMultiblock;
+import wilby.argh.Argh;
+import wilby.argh.block.ArghBlocks;
+import wilby.argh.multiblock.ArghMultiblock;
+import wilby.argh.multiblock.smeltery.TileEntitySmeltery;
 
 public class ArghEvents 
 {
@@ -27,12 +31,17 @@ public class ArghEvents
 	}
 	
 	@SubscribeEvent
-	public void interactMultiblock(PlayerInteractEvent e)
+	public void interactMultiblock(PlayerInteractEvent.RightClickBlock e)
 	{
-		if(e.getWorld().getTileEntity(e.getPos()) instanceof TileEntityMultiblock)
+		Block b = e.getWorld().getBlockState(e.getPos()).getBlock();
+		
+		if(Block.isEqualTo(b, Blocks.BRICK_BLOCK) || Block.isEqualTo(b, ArghBlocks.blastbrick))
 		{
-			TileEntityMultiblock temb = (TileEntityMultiblock) e.getWorld().getTileEntity(e.getPos());
-			System.out.println("Is tile entity multiblock" + temb.toString());
+			TileEntitySmeltery tes = (TileEntitySmeltery) ArghMultiblock.getPartMultiblock(e.getPos());
+			if(tes != null && !e.getWorld().isRemote)
+			{
+				e.getEntityPlayer().openGui(Argh.argh, ArghGuiHandler.smeltery, e.getWorld(), e.getPos().getX(), e.getPos().getY(), e.getPos().getZ());
+			}
 		}
 	}
 	

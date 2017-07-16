@@ -11,9 +11,34 @@ public abstract class TileEntityMultiblock extends TileEntity implements IMultib
 	
 	private ArrayList<BlockPos> partsList;
 	
-	public TileEntityMultiblock()
+	private BlockPos masterPos;
+	
+	private boolean master;
+	
+	public TileEntityMultiblock(BlockPos master, boolean isMaster)
 	{
-		
+		masterPos = master;
+		this.master = isMaster;
+	}
+	
+	public boolean isMaster()
+	{
+		return master;
+	}
+	
+	public void setMasterPos(BlockPos b)
+	{
+		this.masterPos = b;
+	}
+	
+	public void setMaster(boolean b)
+	{
+		master = b;
+	}
+	
+	public BlockPos getMaster()
+	{
+		return masterPos;
 	}
 	
 	@Override
@@ -45,9 +70,6 @@ public abstract class TileEntityMultiblock extends TileEntity implements IMultib
 	{
 		partsList = bp;
 	}
-	
-	@Override
-	public abstract boolean isMaster();
 	
 	@Override
 	public abstract void birthChildren();

@@ -1,6 +1,7 @@
 package wilby.argh.multiblock;
 
 import net.minecraft.tileentity.TileEntity;
+import wilby.argh.multiblock.smeltery.TileEntitySmeltery;
 
 public class ArghTileEntities 
 {
@@ -9,7 +10,7 @@ public class ArghTileEntities
 	{
 		if(id.equalsIgnoreCase("smeltery"))
 		{
-			return new TileEntitySmeltery();
+			return new TileEntitySmeltery(null, true);
 		}
 		
 		return null;

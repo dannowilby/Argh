@@ -1,5 +1,15 @@
 package wilby.argh.common;
 
-public class ArghLogger {
+import org.apache.logging.log4j.Logger;
 
+public class ArghLogger 
+{
+	
+	private Logger log;
+	
+	public ArghLogger(Logger logger)
+	{
+		log = logger;
+	}
+	
 }

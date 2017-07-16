@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wilby.argh.Argh;
@@ -12,6 +13,8 @@ public class ArghMultiblock
 {
 	
 	public static HashMap<String, Structure> structures = new HashMap<String, Structure>();
+	
+	public static HashMap<BlockPos, TileEntityMultiblock> blocks = new HashMap<BlockPos, TileEntityMultiblock>();
 	
 	public static void removeStructure(String id)
 	{
@@ -79,5 +82,20 @@ public class ArghMultiblock
 		temb.setMultiblockPartsList(positions);
 		
 		return true;
+	}
+	
+	public static void removeTiles(BlockPos p)
+	{
+		blocks.remove(p);
+	}
+	
+	public static void putTiles(BlockPos p, TileEntityMultiblock tem)
+	{
+		blocks.put(p, tem);
+	}
+	
+	public static TileEntityMultiblock getPartMultiblock(BlockPos pos) 
+	{	
+		return blocks.get(pos);
 	}
 }

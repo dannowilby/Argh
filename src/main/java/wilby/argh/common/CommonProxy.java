@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wilby.argh.multiblock.ArghMultiblock;
-import wilby.argh.multiblock.TileEntitySmeltery;
+import wilby.argh.multiblock.smeltery.TileEntitySmeltery;
 
-public class CommonProxy implements IGuiHandler
+public class CommonProxy
 {
 	
 	public static Map<String, ArghMultiblock> multiblocks = new HashMap<String, ArghMultiblock>();
@@ -42,18 +42,6 @@ public class CommonProxy implements IGuiHandler
 	public void postInit(FMLPostInitializationEvent e)
 	{
 		
-	}
-	
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) 
-	{
-		return null;
-	}
-
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) 
-	{
-		return null;
 	}
 
 }
