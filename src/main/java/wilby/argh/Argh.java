@@ -50,7 +50,7 @@ public class Argh
 	{
 		proxy.init(e);
 		
-		GameRegistry.registerTileEntity(TileEntitySmeltery.class, "smeltery");
+		GameRegistry.registerTileEntity(TileEntitySmeltery.class, "argh:smeltery");
 		ArghMultiblock.init();
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Argh.argh, new ArghGuiHandler());

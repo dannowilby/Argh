@@ -10,7 +10,7 @@ public class ArghTileEntities
 	{
 		if(id.equalsIgnoreCase("smeltery"))
 		{
-			return new TileEntitySmeltery(null, true);
+			return new TileEntitySmeltery();
 		}
 		
 		return null;

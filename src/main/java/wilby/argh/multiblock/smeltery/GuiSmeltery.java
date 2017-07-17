@@ -42,7 +42,7 @@ public class GuiSmeltery extends GuiContainer
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         String s = this.tes.getRenderName();
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+        this.fontRenderer.drawString(s, 8, 6, 4210752);
         this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 	

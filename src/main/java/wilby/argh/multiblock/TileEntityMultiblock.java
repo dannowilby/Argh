@@ -2,9 +2,11 @@ package wilby.argh.multiblock;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import wilby.argh.block.ArghBlocks;
 
 public abstract class TileEntityMultiblock extends TileEntity implements IMultiblock
 {
@@ -15,10 +17,9 @@ public abstract class TileEntityMultiblock extends TileEntity implements IMultib
 	
 	private boolean master;
 	
-	public TileEntityMultiblock(BlockPos master, boolean isMaster)
+	public TileEntityMultiblock()
 	{
-		masterPos = master;
-		this.master = isMaster;
+		
 	}
 	
 	public boolean isMaster()

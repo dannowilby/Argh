@@ -2,6 +2,7 @@ package wilby.argh.multiblock.smeltery;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,6 +15,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import wilby.argh.block.ArghBlocks;
 import wilby.argh.multiblock.ArghMultiblock;
 import wilby.argh.multiblock.TileEntityMultiblock;
 
@@ -22,9 +24,9 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	
 	private ArrayList<BlockPos> children;
 	
-	public TileEntitySmeltery(BlockPos master, boolean isMaster)
+	public TileEntitySmeltery()
 	{
-		super(master, isMaster);
+		super();
 	}
 	
 	@Override
@@ -32,6 +34,11 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	{
 		if(refreshRate())
 		{
+			if(Block.isEqualTo(world.getBlockState(pos).getBlock(), ArghBlocks.smelteryVent))
+			{
+				this.setMaster(true);
+			}
+			
 			if(isMaster())
 			{
 				if(isFullMultiblock() && children == null)
@@ -57,26 +64,6 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	}
 	
 	@Override
-    public NBTTagCompound getUpdateTag() 
-	{
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() 
-    {
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        this.writeToNBT(nbtTag);
-        return new SPacketUpdateTileEntity(this.getMaster(), 1, nbtTag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) 
-    {
-    	this.readFromNBT(packet.getNbtCompound());
-    }
-	
-	@Override
 	public boolean isFullMultiblock() 
 	{
 		return ArghMultiblock.isMultiblock("smeltery", world, pos, this);
@@ -88,7 +75,9 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 		System.out.println("giving birth");
 		children = new ArrayList<BlockPos>();
 		this.getMultiblockPartsList().forEach((i) -> {
-			ArghMultiblock.putTiles(i, new TileEntitySmeltery(pos, false));
+			TileEntitySmeltery tes = new TileEntitySmeltery();
+			tes.setMasterPos(pos);
+			ArghMultiblock.putTiles(i, tes);
 			children.add(i);
 		});
 	}
@@ -118,13 +107,8 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	{
 		super.readFromNBT(compound);
 		
-		boolean mast = compound.getBoolean("master");
+		ItemStackHelper.loadAllItems(compound, this.furnaceItemStacks);
 		
-		if(mast)
-		{
-			ItemStackHelper.loadAllItems(compound, this.furnaceItemStacks);
-			this.setMaster(true);
-		}
 	}
 	
 	@Override
@@ -132,11 +116,8 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	{
 		super.writeToNBT(compound);
 		
-		if(this.isMaster())
-		{
-			this.setMaster(compound.getBoolean("master"));
-			ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
-		}
+		ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
+		
 		return compound;
 	}
 
