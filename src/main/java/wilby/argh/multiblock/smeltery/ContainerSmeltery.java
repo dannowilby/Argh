@@ -1,9 +1,14 @@
 package wilby.argh.multiblock.smeltery;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSmeltery extends Container
@@ -19,9 +24,22 @@ public class ContainerSmeltery extends Container
         {
             for (int j = 0; j < 3; ++j)
             {
-                this.addSlotToContainer(new Slot(tes, j + il * 3, 62 + j * 18, 17 + il * 18));
+            	this.addSlotToContainer(new Slot(tes, j + il * 3, 40 + j * 18, 17 + il * 18));
             }
         }
+		
+		for(int t = 0; t < 3; t++)
+		{
+			this.addSlotToContainer(new SlotSmelteryFuel(tes, 9 + t, 12, 17 + t * 18));
+		}
+		
+		for(int t = 0; t < 3; t++)
+		{
+			for(int j = 0; j < 2; j++)
+			{
+				this.addSlotToContainer(new SlotFurnaceOutput(((InventoryPlayer)i).player, tes, 12 + t + j * 3, 131 + j * 18, 17 + t * 18));
+			}
+		}
 		
         for (int k = 0; k < 3; ++k)
         {
@@ -64,5 +82,30 @@ public class ContainerSmeltery extends Container
 	    }
 	    return previous;
 	}
+	
+	public class SlotSmelteryFuel extends Slot
+	{
 
+		ItemStack[] fuels = {new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK)), new ItemStack(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK))};
+		
+		public SlotSmelteryFuel(IInventory inventoryIn, int index, int xPosition, int yPosition) 
+		{
+			super(inventoryIn, index, xPosition, yPosition);
+		}
+		
+		@Override
+		public boolean isItemValid(ItemStack stack)
+		{
+			for(ItemStack i : fuels)
+			{
+				if(i.getItem().equals(stack.getItem()))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
+	}
+	
 }

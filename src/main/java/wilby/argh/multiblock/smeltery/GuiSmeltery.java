@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiSmeltery extends GuiContainer
@@ -20,8 +21,6 @@ public class GuiSmeltery extends GuiContainer
         this.tes = te;
         this.player = playerInv;
         
-        this.xSize = 176;
-        this.ySize = 166;
     }
 	
 	@Override
@@ -54,5 +53,34 @@ public class GuiSmeltery extends GuiContainer
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
+        
+        if (TileEntitySmeltery.isBurning(this.tes))
+        {
+            int k = this.getBurnLeftScaled(13);
+            System.out.println(k);
+            this.drawTexturedModalRect(i + 105, j + 55 + 12 - k, 176, 12 - k, 14, k + 1);
+        }
+
+        int l = this.getCookProgressScaled(24);
+        this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+    }
+	
+	private int getCookProgressScaled(int pixels)
+    {
+        int i = this.tes.getField(0);
+        int j = this.tes.getField(1);
+        return j != 0 && i != 0 ? i * pixels / j : 0;
+    }
+
+    private int getBurnLeftScaled(int pixels)
+    {
+        int i = this.tes.getField(2);
+        System.out.println(i);
+        if (i == 0)
+        {
+            i = 500;
+        }
+        System.out.println(i + " " + tes.getField(3));
+        return this.tes.getField(3) * pixels / i;
     }
 }
