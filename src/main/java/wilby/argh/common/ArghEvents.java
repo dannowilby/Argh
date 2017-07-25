@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import wilby.argh.Argh;
 import wilby.argh.block.ArghBlocks;
 import wilby.argh.multiblock.ArghMultiblock;
@@ -30,17 +31,26 @@ public class ArghEvents
 		}
 	}
 	
+	private boolean isMenuBlock(Block b) {
+		return Block.isEqualTo(b, Blocks.BRICK_BLOCK) || Block.isEqualTo(b, ArghBlocks.blastbrick); 
+	}
+	
+	private Block toBlock(PlayerInteractEvent.RightClickBlock rcb) {
+		return rcb.getWorld().getBlockState(rcb.getPos()).getBlock();
+	}
+	
 	@SubscribeEvent
-	public void interactMultiblock(PlayerInteractEvent.RightClickBlock e)
+	public void interactMultiblock(PlayerInteractEvent.RightClickBlock rcb)
 	{
-		Block b = e.getWorld().getBlockState(e.getPos()).getBlock();
+		Block block = this.toBlock(rcb); 
 		
-		if(Block.isEqualTo(b, Blocks.BRICK_BLOCK) || Block.isEqualTo(b, ArghBlocks.blastbrick))
+		if(this.isMenuBlock(block))
 		{
-			TileEntitySmeltery tes = (TileEntitySmeltery) ArghMultiblock.getPartMultiblock(e.getPos());
-			if(tes != null && !e.getWorld().isRemote)
+			TileEntitySmeltery tes = (TileEntitySmeltery) ArghMultiblock.getPartMultiblock(rcb.getPos());
+			if(tes != null && !rcb.getWorld().isRemote)
 			{
-				e.getEntityPlayer().openGui(Argh.argh, ArghGuiHandler.smeltery, e.getWorld(), e.getPos().getX(), e.getPos().getY(), e.getPos().getZ());
+				rcb.getEntityPlayer().openGui(Argh.argh, ArghGuiHandler.smeltery, rcb.getWorld(), rcb.getPos().getX(), rcb.getPos().getY(), rcb.getPos().getZ());
+				rcb.setCanceled(true);
 			}
 		}
 	}

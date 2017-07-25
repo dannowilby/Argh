@@ -3,14 +3,12 @@ package wilby.argh.multiblock.smeltery;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -18,7 +16,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import wilby.argh.block.ArghBlocks;
@@ -46,6 +43,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	public TileEntitySmeltery()
 	{
 		super();
+		
 	}
 	
 	@Override
@@ -54,7 +52,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 		
 		boolean flag = false;
 		
-		if (!this.world.isRemote)
+		if (!this.world.isRemote && isFullMultiblock())
         {
 			if(this.canSmelt())
 			{
@@ -66,25 +64,24 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 				}
 				if(this.isBurning())
 				{
-					this.cookTime++;
 		    	  	this.burnTime--;
-		    	  	flag = true;
-		       	}
+		    	}
+				else
+				{
+					this.cookTime = 0;
+				}
 				if(!this.isBurning() && hasFuel())
 		       	{
 		    	   	burnTime = this.getTotalBurnTime();
 		    	   	removeFuel(1);
 		       	}
 			}
+			else if(this.isBurning())
+			{
+				burnTime--;
+			}
         }
-
-		if(flag)
-		{
-			this.setField(2, burnTime);
-			this.setField(0, cookTime);
-			this.markDirty();
-			flag = false;
-		}
+		this.markDirty();
 		
      	if(refreshRate())
 		{
@@ -179,14 +176,15 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 		{
 			for(int il = 0; il < 9; il++)
 			{
-				ItemStack in = (ItemStack) this.furnaceItemStacks.get(il);
-				ItemStack t = SmelteryRecipes.getInstance().getSmeltingResult(in.getItem());
+				ItemStack in = this.furnaceItemStacks.get(il);
+				ItemStack t = SmelteryRecipes.getInstance().getSmeltingResult(in);
 				if(t != null)
-						if(!t.isEmpty())
-							return true;
-				else
-					return false;
+				{
+					if(!t.isEmpty())
+						return true;
+				}
 			}
+			return false;
 		}
 		if(!this.isBurning())
 		{
@@ -197,9 +195,8 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 			for(int k = 0; k < 9; k++)
 			{
 				ItemStack in = (ItemStack) this.furnaceItemStacks.get(k);
-				System.out.println(in);
-				ItemStack t = SmelteryRecipes.getInstance().getSmeltingResult(in.getItem());
-				System.out.println("k = " + k + " " + in + " " + t);
+				ItemStack t = SmelteryRecipes.getInstance().getSmeltingResult(in);
+				
 				if(t != null)
 					if(!t.isEmpty())
 						return true;
@@ -228,9 +225,58 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 		return true;
 	}
 	
+	public int smeltSpace(ItemStack is)
+	{
+		ItemStack s = SmelteryRecipes.getInstance().getSmeltingResult(is);
+		
+		for(int i = 0; i < 6; i++)
+		{
+			ItemStack t = this.furnaceItemStacks.get(12 + i);
+			if(t == null || t.isEmpty())
+			{
+				return i;
+			}
+			if(!t.isEmpty() && s != null)
+			{
+				if(!s.isEmpty())
+				{
+					if(t.getItem().equals(s.getItem()))
+					{
+						int p = 64 - t.getCount();
+						if(p >= s.getCount())
+							return i;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+	
 	public void smeltItem()
 	{
+		ItemStack[] is = new ItemStack[9];
 		
+		for(int i = 0; i < 9; i++)
+		{
+			is[i] = this.furnaceItemStacks.get(i);
+		}
+		
+		for(ItemStack i : is)
+		{
+			int l = smeltSpace(i);
+			ItemStack n = SmelteryRecipes.getInstance().getSmeltingResult(i);
+			if(l != -1 && n != null)
+			{
+				if(!n.isEmpty())
+				{
+					int t = this.furnaceItemStacks.get(l + 12).getCount();
+					int p = n.getCount();
+					n.setCount(p + t);
+					this.furnaceItemStacks.set(l + 12, n);
+					i.setCount(i.getCount() - 1);
+				}
+			}
+		}
 	}
 	
 	public boolean isBurning()
@@ -262,11 +308,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 			case 0:
 				return this.cookTime;
 			case 1:
-				return this.getTotalCookTime();
-			case 2:
 				return this.burnTime;
-			case 3: 
-				return this.getTotalBurnTime();
 			default:
 				return -1;
 		}
@@ -289,7 +331,7 @@ public class TileEntitySmeltery extends TileEntityMultiblock implements ISidedIn
 	@Override
 	public int getFieldCount() 
 	{
-		return 4;
+		return 2;
 	}
 	
 	@Override

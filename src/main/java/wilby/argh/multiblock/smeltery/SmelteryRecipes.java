@@ -15,7 +15,8 @@ public class SmelteryRecipes
 	
 	private static final SmelteryRecipes SMELTING_BASE = new SmelteryRecipes();
 	
-	private Map<Item, ItemStack> smeltList = new HashMap<Item, ItemStack>();
+	private Map<Item, Integer> smeltList = new HashMap<Item, Integer>();
+	private Map<Item, Item> itemList = new HashMap<Item, Item>();
 	private Map<Item, Float> xpList = new HashMap<Item, Float>();
 	
 	public static SmelteryRecipes getInstance()
@@ -25,34 +26,30 @@ public class SmelteryRecipes
 	
 	public SmelteryRecipes()
 	{
-		addRecipe(Item.getItemFromBlock(Blocks.IRON_ORE), new ItemStack(Items.IRON_INGOT, 3), 1.0f);
-		addRecipe(Item.getItemFromBlock(Blocks.GOLD_ORE), new ItemStack(Items.GOLD_INGOT, 3), 1.0f);
-        addRecipe(Item.getItemFromBlock(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2), 1.0F);
-		addRecipe(Item.getItemFromBlock(Blocks.COAL_ORE), new ItemStack(Items.COAL, 2), 1.0F);
-        addRecipe(Item.getItemFromBlock(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 4), 1.0F);
-        addRecipe(Item.getItemFromBlock(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 4, EnumDyeColor.BLUE.getDyeDamage()), 1.0F);
-        addRecipe(Item.getItemFromBlock(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 4), 1.0F);
+		addRecipe(Item.getItemFromBlock(Blocks.IRON_ORE), Items.IRON_INGOT, 3, 1.0f);
+		addRecipe(Item.getItemFromBlock(Blocks.GOLD_ORE), Items.GOLD_INGOT, 3, 1.0f);
+        addRecipe(Item.getItemFromBlock(Blocks.DIAMOND_ORE), Items.DIAMOND, 2, 1.0F);
+		addRecipe(Item.getItemFromBlock(Blocks.COAL_ORE), Items.COAL, 2, 1.0F);
+        addRecipe(Item.getItemFromBlock(Blocks.REDSTONE_ORE), Items.REDSTONE, 4, 1.0F);
+        addRecipe(Item.getItemFromBlock(Blocks.QUARTZ_ORE),Items.QUARTZ, 4, 1.0F);
 	}
 	
-	public void addRecipe(Item in, ItemStack out, float xp)
+	public void addRecipe(Item in, Item out, int amount, float xp)
 	{
-		smeltList.put(in, out);
+		smeltList.put(in, amount);
+		itemList.put(in, out);
 		xpList.put(in, xp);
 	}
 	
-	public ItemStack getSmeltingResult(Item in)
+	public ItemStack getSmeltingResult(ItemStack in)
 	{
-		return smeltList.get(in);
+		if(itemList.containsKey(in.getItem()))
+			return new ItemStack(itemList.get(in.getItem()), smeltList.get(in.getItem()));
+		return null;
 	}
 	
 	public Float getXpResult(ItemStack in)
 	{
 		return xpList.get(in.toString());
 	}
-	
-	public Map<Item, ItemStack> getSmeltList()
-	{
-		return smeltList;
-	}
-	
 }

@@ -57,30 +57,22 @@ public class GuiSmeltery extends GuiContainer
         if (TileEntitySmeltery.isBurning(this.tes))
         {
             int k = this.getBurnLeftScaled(13);
-            System.out.println(k);
             this.drawTexturedModalRect(i + 105, j + 55 + 12 - k, 176, 12 - k, 14, k + 1);
         }
 
         int l = this.getCookProgressScaled(24);
-        this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+        this.drawTexturedModalRect(i + 99, j + 35, 176, 14, l + 1, 16);
     }
 	
 	private int getCookProgressScaled(int pixels)
     {
-        int i = this.tes.getField(0);
-        int j = this.tes.getField(1);
-        return j != 0 && i != 0 ? i * pixels / j : 0;
+		int i = this.tes.getField(0);
+        return i * pixels / this.tes.getTotalCookTime();
     }
 
     private int getBurnLeftScaled(int pixels)
     {
-        int i = this.tes.getField(2);
-        System.out.println(i);
-        if (i == 0)
-        {
-            i = 500;
-        }
-        System.out.println(i + " " + tes.getField(3));
-        return this.tes.getField(3) * pixels / i;
+        int i = this.tes.getField(1);
+        return i * pixels / this.tes.getTotalBurnTime();
     }
 }

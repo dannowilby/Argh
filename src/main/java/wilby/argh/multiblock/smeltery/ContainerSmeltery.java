@@ -5,16 +5,22 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerSmeltery extends Container
 {
 
 	private TileEntitySmeltery tes;
+	
+	private int cookTime;
+    private int furnaceBurnTime;
 	
 	public ContainerSmeltery(IInventory i, TileEntitySmeltery tes)
 	{
@@ -66,7 +72,6 @@ public class ContainerSmeltery extends Container
 	{
 	    ItemStack previous = null;
 	    Slot slot = (Slot) this.inventorySlots.get(fromSlot);
-
 	    if (slot != null && slot.getHasStack()) {
 	        ItemStack current = slot.getStack();
 	        previous = current.copy();
@@ -82,6 +87,46 @@ public class ContainerSmeltery extends Container
 	    }
 	    return previous;
 	}
+	
+	@Override
+	public void addListener(IContainerListener listener)
+    {
+        super.addListener(listener);
+        listener.sendAllWindowProperties(this, this.tes);
+    }
+
+    /**
+     * Looks for changes made in the container, sends them to every listener.
+     */
+	@Override
+    public void detectAndSendChanges()
+    {
+        super.detectAndSendChanges();
+
+        for (int i = 0; i < this.listeners.size(); ++i)
+        {
+            IContainerListener icontainerlistener = this.listeners.get(i);
+
+            if (this.cookTime != this.tes.getField(0))
+            {
+                icontainerlistener.sendWindowProperty(this, 0, this.tes.getField(0));
+            }
+
+            if (this.furnaceBurnTime != this.tes.getField(1))
+            {
+                icontainerlistener.sendWindowProperty(this, 1, this.tes.getField(1));
+            }
+        }
+
+        this.cookTime = this.tes.getField(0);
+        this.furnaceBurnTime = this.tes.getField(1);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int data)
+    {
+        this.tes.setField(id, data);
+    }
 	
 	public class SlotSmelteryFuel extends Slot
 	{
