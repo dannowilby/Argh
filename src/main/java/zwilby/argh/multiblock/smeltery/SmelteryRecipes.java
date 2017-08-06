@@ -1,4 +1,4 @@
-package wilby.argh.multiblock.smeltery;
+package zwilby.argh.multiblock.smeltery;
 
 import java.util.HashMap;
 import java.util.Map;

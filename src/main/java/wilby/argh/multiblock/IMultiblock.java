@@ -1,26 +1,18 @@
 package wilby.argh.multiblock;
 
-import java.util.ArrayList;
-
-import net.minecraft.util.ITickable;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public interface IMultiblock extends ITickable
+public interface IMultiblock
 {
-	@Override
-	void update();
 	
-	boolean isFullMultiblock();
+	void createMultiblock(World world, BlockPos pos, EntityPlayer player);
 	
-	boolean isMultiblockPart(BlockPos bp);
+	boolean checkIsMultiblock(World world, BlockPos pos);
 	
-	boolean isMaster();
+	ItemStack[][][] getStructure();
 	
-	ArrayList<BlockPos> getMultiblockPartsList();
-	
-	void setMultiblockPartsList(ArrayList<BlockPos> bp);
-	
-	void birthChildren();
-	
-	void deleteChildren();
 }

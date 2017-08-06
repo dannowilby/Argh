@@ -1,4 +1,4 @@
-package wilby.argh.block;
+package wilby.argh.block.multiblock;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -8,25 +8,33 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import wilby.argh.multiblock.smeltery.TileEntitySmeltery;
+import wilby.argh.block.ArghBlock;
+import wilby.argh.multiblock.tileentity.TileEntitySmeltery;
 
-public class BlockArghSmeltery extends BlockContainerArgh {
+public class BlockSmeltery extends ArghBlock 
+{
 
-	public BlockArghSmeltery(String name, String tileEntity, Material materialIn) 
+	public BlockSmeltery(String name, Material materialIn) 
 	{
-		super(name, tileEntity, materialIn);
+		super(name, materialIn);
+	}
+	
+	@Override
+	public boolean hasTileEntity(IBlockState state)
+	{
+		return true;
+	}
+	
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state)
+	{
+		return new TileEntitySmeltery();
 	}
 	
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntity e = world.getTileEntity(pos);
-		if(e != null && e instanceof TileEntitySmeltery)
-		{
-			TileEntitySmeltery te = (TileEntitySmeltery) e;
-			if(te.hasChildren())
-				te.deleteChildren();
-		}
+		
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package wilby.argh.multiblock.smeltery;
+package zwilby.argh.multiblock.smeltery;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ResourceLocation;
+import wilby.argh.multiblock.tileentity.TileEntitySmeltery;
 
 public class GuiSmeltery extends GuiContainer
 {
@@ -40,8 +41,6 @@ public class GuiSmeltery extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        String s = this.tes.getRenderName();
-        this.fontRenderer.drawString(s, 8, 6, 4210752);
         this.fontRenderer.drawString(this.player.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
     }
 	
@@ -54,25 +53,5 @@ public class GuiSmeltery extends GuiContainer
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         
-        if (TileEntitySmeltery.isBurning(this.tes))
-        {
-            int k = this.getBurnLeftScaled(13);
-            this.drawTexturedModalRect(i + 105, j + 55 + 12 - k, 176, 12 - k, 14, k + 1);
-        }
-
-        int l = this.getCookProgressScaled(24);
-        this.drawTexturedModalRect(i + 99, j + 35, 176, 14, l + 1, 16);
-    }
-	
-	private int getCookProgressScaled(int pixels)
-    {
-		int i = this.tes.getField(0);
-        return i * pixels / this.tes.getTotalCookTime();
-    }
-
-    private int getBurnLeftScaled(int pixels)
-    {
-        int i = this.tes.getField(1);
-        return i * pixels / this.tes.getTotalBurnTime();
     }
 }

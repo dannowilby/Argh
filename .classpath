@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/forge"/>
-	<classpathentry kind="lib" path="C:/Users/dywil/.gradle/caches/minecraft/net/minecraftforge/forge/1.12-14.21.0.2382/snapshot/20170624/forgeSrc-1.12-14.21.0.2382.jar" sourcepath="C:/Users/dywil/.gradle/caches/minecraft/net/minecraftforge/forge/1.12-14.21.0.2382/snapshot/20170624/forgeSrc-1.12-14.21.0.2382-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/dywil/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/e801d13612e22cad62a3f4f3fe7fdbe6334a8e72/log4j-api-2.8.1.jar" sourcepath="C:/Users/dywil/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/a5edb6b8c77843c8be98e0cb1f875699e76ee122/log4j-api-2.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/dywil/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/18.0/cce0823396aa693798f8882e64213b1772032b09/guava-18.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/new forge"/>
+	<classpathentry kind="lib" path="C:/Users/dywil/.gradle/caches/minecraft/net/minecraftforge/forge/1.12-14.21.1.2426/snapshot/20170624/forgeSrc-1.12-14.21.1.2426.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

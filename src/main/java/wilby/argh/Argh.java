@@ -1,8 +1,7 @@
 package wilby.argh;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,10 +13,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wilby.argh.common.ArghEvents;
 import wilby.argh.common.ArghGuiHandler;
+import wilby.argh.common.ArghTileEntity;
 import wilby.argh.common.CommonProxy;
-import wilby.argh.common.Config;
-import wilby.argh.multiblock.ArghMultiblock;
-import wilby.argh.multiblock.smeltery.TileEntitySmeltery;
+import wilby.argh.multiblock.MultiblockMiner;
+import wilby.argh.multiblock.MultiblockSmeltery;
+import wilby.argh.multiblock.tileentity.TileEntityMiner;
+import wilby.argh.multiblock.tileentity.TileEntityMultiblockBase;
+import wilby.argh.multiblock.tileentity.TileEntitySmeltery;
+import wilby.argh.util.ArghLoader;
+import wilby.argh.util.ArghLogger;
 
 @Mod(modid = Argh.MODID, version = Argh.VERSION, name = Argh.NAME)
 
@@ -32,42 +36,32 @@ public class Argh
 	    
 	@Instance("argh")
 	public static Argh argh = new Argh();
-
-	public static Logger modlogger;
 	
-	private static Config config;
-	    
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e)
 	{
-		proxy.preInit(e);
-		
-		config = new Config(e.getModConfigurationDirectory());
+		ArghLogger.setLogger(e.getModLog());
+		ArghLoader.setLoaderConfigurationDirectory(e.getModConfigurationDirectory());
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent e)
 	{
-		proxy.init(e);
+		ArghLogger.log("Initialising Arghmod-3...");
 		
-		GameRegistry.registerTileEntity(TileEntitySmeltery.class, "argh:smeltery");
-		ArghMultiblock.init();
+		ArghTileEntity.init();
+		
+		ClientRegistry.registerKeyBinding(new ArghEvents().k);
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(Argh.argh, new ArghGuiHandler());
-		
 		MinecraftForge.EVENT_BUS.register(new ArghEvents());
 	}
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e)
 	{
-		proxy.postInit(e);
-		
-	}
-	
-	public static Config getConfig()
-	{
-		return config;
+		ArghLogger.log("Finished loading Arghmod-3...");
+		ArghLogger.log("Prepare for Greatness!");
 	}
 	
 }

@@ -1,4 +1,4 @@
-package wilby.argh.multiblock.smeltery;
+package zwilby.argh.multiblock.smeltery;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,8 +11,11 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import wilby.argh.multiblock.tileentity.TileEntitySmeltery;
 
 public class ContainerSmeltery extends Container
 {
@@ -68,25 +71,19 @@ public class ContainerSmeltery extends Container
 	}
 	
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int fromSlot) 
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) 
 	{
-	    ItemStack previous = null;
-	    Slot slot = (Slot) this.inventorySlots.get(fromSlot);
-	    if (slot != null && slot.getHasStack()) {
-	        ItemStack current = slot.getStack();
-	        previous = current.copy();
+		ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
 
-	        if (current.getCount() == 0)
-	            slot.putStack((ItemStack) null);
-	        else
-	            slot.onSlotChanged();
-
-	        if (current.getCount() == previous.getCount())
-	            return null;
-	        slot.onTake(playerIn, current);
-	    }
-	    return previous;
-	}
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+        }
+        
+        return itemstack;
+    }
 	
 	@Override
 	public void addListener(IContainerListener listener)
@@ -131,7 +128,9 @@ public class ContainerSmeltery extends Container
 	public class SlotSmelteryFuel extends Slot
 	{
 
-		ItemStack[] fuels = {new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK)), new ItemStack(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK))};
+		ItemStack[] fuels = {new ItemStack(Items.COAL), 
+				new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK)), 
+				new ItemStack(Item.getItemFromBlock(Blocks.DIAMOND_BLOCK))};
 		
 		public SlotSmelteryFuel(IInventory inventoryIn, int index, int xPosition, int yPosition) 
 		{
