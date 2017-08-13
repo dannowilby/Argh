@@ -37,18 +37,7 @@ public class ArghBlock extends Block
 	{
 		if(player.getActiveItemStack().getItem().equals(ArghItems.hammer))
 		{
-			System.out.println("asus");
-		}
-		
-		if(this.hasTileEntity(world.getBlockState(pos)))
-		{
-			ArghLogger.log("what");
-			ArghTileEntityMultiblock.multiblockList.forEach((m) -> {
-				if(m.checkIsMultiblock(world, pos))
-				{
-					m.createMultiblock(world, pos, player);
-				}
-			});
+			System.out.println("Hammer Time!");
 		}
 	}
 	

@@ -9,9 +9,11 @@ import net.minecraft.world.World;
 public interface IMultiblock
 {
 	
-	void createMultiblock(World world, BlockPos pos, EntityPlayer player);
+	void addToWorld(World world, BlockPos pos, EntityPlayer player);
 	
-	boolean checkIsMultiblock(World world, BlockPos pos);
+	boolean createMultiblock(World world, BlockPos pos, EnumFacing side, EntityPlayer player);
+	
+	boolean structureCheck(World world, BlockPos pos, EnumFacing facing, boolean mirror);
 	
 	ItemStack[][][] getStructure();
 	

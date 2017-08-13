@@ -45,9 +45,12 @@ public class ArghLoader
 		
 	}
 	
-	public static ItemStack[][][] loadStructureFromFile(File struct)
+	public static Object[] loadStructureFromFile(File struct)
 	{
 		ItemStack[][][] structure = null;
+		
+		Object[] attribs = new Object[4];
+		
 		long start = System.currentTimeMillis();
 		long stop;
 		try
@@ -60,6 +63,11 @@ public class ArghLoader
 			int x = Integer.parseInt(size[0]);
 			int y = Integer.parseInt(size[1]);
 			int z = Integer.parseInt(size[2]);
+			
+			attribs[1] = x;
+			attribs[2] = y;
+			attribs[3] = z;
+			
 			ArghLogger.log("Size = " + x + " - " + y + " - " + z);
 			structure = new ItemStack[x][y][z];
 			int x1 = 0;
@@ -104,30 +112,32 @@ public class ArghLoader
 			ArghLogger.log("Finished loading structure from " + struct.getName());
 			ArghLogger.log("Loading structure took " + ((float)time/(float)1000) + " seconds");
 		}
+		attribs[0] = structure;
 		
-		return structure;
+		return attribs;
 	}
 	
-	public static ItemStack[][][] loadStructure(String fileName)
+	public static Object[] loadStructure(String fileName)
 	{
-		File struct = new File(modFile.getPath() + "/" + Argh.MODID + "/structures/" + fileName + ".strct");
 		
-		ItemStack[][][] structure;
+		Object[] attribs = new Object[4];
+		
+		File struct = new File(modFile.getPath() + "/" + Argh.MODID + "/structures/" + fileName + ".strct");
 		
 		ArghLogger.log("Loading structure from " + struct.getName());
 		
 		if(struct.exists())
 		{
-			structure = loadStructureFromFile(struct);
+			attribs = loadStructureFromFile(struct);
 		}
 		else
 		{
 			ArghLogger.log("Structure file not found! Downloading default!");
 			installStructures(fileName);
-			structure = null; //loadStructure(fileName);
+			attribs = null; //loadStructure(fileName);
 		}
 		
-		return structure;
+		return attribs;
 	}
 	
 }

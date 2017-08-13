@@ -5,19 +5,17 @@ import net.minecraftforge.energy.IEnergyStorage;
 import wilby.argh.multiblock.MultiblockSmeltery;
 import wilby.argh.util.ArghLogger;
 
-public class TileEntitySmeltery extends TileEntityMultiblockBrain<MultiblockSmeltery>
+public class TileEntitySmeltery extends TileEntityMultiblock
 {
 
 	public TileEntitySmeltery()
 	{
-		super(MultiblockSmeltery.instance);
+		super("smeltery");
 	}
 	
 	@Override
 	public void update()
-	{
-		super.update();
-		
+	{	
 		if(world.getWorldTime() % 20 == 0)
 		{
 			ArghLogger.log("Ticking away!");
@@ -35,11 +33,4 @@ public class TileEntitySmeltery extends TileEntityMultiblockBrain<MultiblockSmel
 	{
 		super.readFromNBT(compound);
 	}
-	
-	@Override
-	public String getOfficialName() 
-	{
-		return "smeltery";
-	}
-	
 }

@@ -12,26 +12,20 @@ import wilby.argh.multiblock.MultiblockSmeltery;
 public class ArghTileEntityMultiblock 
 {
 	
-	public static ArrayList<ITileEntityMultiblock> entityList;
-	public static ArrayList<IMultiblock> multiblockList;
+	public static ArrayList<TileEntityMultiblock> entityList;
 	
 	@SuppressWarnings("unchecked")
 	public static void init()
 	{
-		entityList = new ArrayList<ITileEntityMultiblock>();
-		multiblockList = new ArrayList<IMultiblock>();
+		entityList = new ArrayList<TileEntityMultiblock>();
 		
 		entityList.add(new TileEntitySmeltery());
 		entityList.add(new TileEntityMiner());
 		entityList.add(new TileEntityBricker());
-		entityList.add(new TileEntityMultiblockBase());
-		
-		multiblockList.add(MultiblockMiner.instance);
-		multiblockList.add(MultiblockBricker.instance);
-		multiblockList.add(MultiblockSmeltery.instance);
+		entityList.add(new TileEntityComponent());
 		
 		entityList.forEach((te) -> {
-			GameRegistry.registerTileEntity((Class<? extends TileEntity>) te.getClass(), te.getOfficialName());
+			GameRegistry.registerTileEntity((Class<? extends TileEntity>) te.getClass(), te.getName());
 		});
 	}
 	
@@ -48,10 +42,6 @@ public class ArghTileEntityMultiblock
 		if(s.equals("bricker"))
 		{
 			return new TileEntityBricker();
-		}
-		if(s.equals("base"))
-		{
-			return new TileEntityMultiblockBase();
 		}
 		return null;
 	}

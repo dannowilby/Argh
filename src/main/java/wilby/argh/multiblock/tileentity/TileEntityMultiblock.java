@@ -1,20 +1,28 @@
 package wilby.argh.multiblock.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import wilby.argh.multiblock.MultiblockMiner;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 
-public class TileEntityMiner extends TileEntityMultiblock
+public class TileEntityMultiblock extends TileEntity implements ITickable
 {
+
+	private String name;
 	
-	public TileEntityMiner()
+	public TileEntityMultiblock(String name)
 	{
-		super("miner");
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return this.name;
 	}
 	
 	@Override
-	public void update()
+	public void update() 
 	{
-		super.update();
+		
 	}
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound compound)
@@ -28,5 +36,4 @@ public class TileEntityMiner extends TileEntityMultiblock
 	{
 		super.readFromNBT(compound);
 	}
-	
 }

@@ -1,26 +1,33 @@
 package wilby.argh.multiblock.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import wilby.argh.multiblock.MultiblockBricker;
 
-public class TileEntityBricker extends TileEntityMultiblock
+public class TileEntityComponent extends TileEntityMultiblock
 {
+
+	private boolean master;
 	
-	public TileEntityBricker() 
+	public TileEntityComponent() 
 	{
-		super("bricker");
+		super("component");
+	}
+	
+	public void setIsMaster(boolean b)
+	{
+		this.master = b;
 	}
 	
 	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
 		super.writeToNBT(compound);
-		
+		compound.setBoolean("master", master);
 		return compound;
 	}
 	
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		super.readFromNBT(compound);
+		this.master = compound.getBoolean("master");
 	}
 	
 }

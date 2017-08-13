@@ -7,8 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wilby.argh.block.ArghBlock;
-import wilby.argh.multiblock.tileentity.TileEntityMultiblockBase;
-import wilby.argh.multiblock.tileentity.TileEntityMultiblockBrain;
+import wilby.argh.multiblock.tileentity.TileEntityComponent;
 
 public class BlockMetalStructure extends ArghBlock 
 {
@@ -21,16 +20,7 @@ public class BlockMetalStructure extends ArghBlock
 	@Override
 	public void onBlockClicked(World world, BlockPos pos, EntityPlayer player)
 	{
-		TileEntity t;
-		if((t = world.getTileEntity(pos)) != null)
-		{
-			if(t instanceof TileEntityMultiblockBase)
-			{
-				TileEntityMultiblockBase te = (TileEntityMultiblockBase) t;
-				TileEntityMultiblockBrain temb = te.getBrain();
-				System.out.println(temb.getName());
-			}
-		}
+		
 	}
 	
 	@Override
@@ -42,7 +32,7 @@ public class BlockMetalStructure extends ArghBlock
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
-		return new TileEntityMultiblockBase();
+		return new TileEntityComponent();
 	}
 	
 }
